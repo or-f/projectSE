@@ -16,36 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -62,6 +38,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     TextView title_x, location_x;
     String typeOfEvent;
 
+/// integration
+
+    private List<Event> EventList;
+    private ListView listView;
+    private TextView EventName, EventDate, EventType;
+    private EventsAdapter adapter;
+    EventsHandler db;
+/// integration
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +56,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
         showDialogOnButtonClick();
 
+/// integration
+        listView = (ListView) findViewById(R.id.eventList);
+        db = new EventsHandler(this);
+        EventList = db.getAllContacts();
+        adapter = new EventsAdapter(this, EventList);
+        listView.setAdapter(adapter);
+/// integration
 
         //   A D D    B U T T O N =fab
         // when clicking on the Add button a new event is created using the data from the user
@@ -104,15 +97,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         Date d=new Date(year_x,month_x,day_x);
                         d.setDate(day_x);
                         d.setMonth(month_x);
-                        d.setYear(year_x);
-
+                        d.setYear(year_x-1900);
                         // create the Event object
                         Event event =new Event(d,time,location_x.getText().toString(),typeOfEvent,title_x.getText().toString());
 
                         //TEST to see the event created:
-                        Toast.makeText(context, " title: "+event.title +" loction: " +  event.location +" type: "+ event.eventType+ " Date: " + event.date.toString()+ " time: "+ event.time.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, " title: "+event.title +" loction: " +  event.location +" type: "+ event.eventType+ " Date: " + event.date.toString()+ d.toString()+ " time: "+ event.time.toString(), Toast.LENGTH_LONG).show();
 
                         // #### TO DO: send event object to database
+
+                        int id = db.addContact(event);
+                        event.setId(id);
+                        EventList.add(event);
+                        adapter.notifyDataSetChanged();
+
                         // ####        return to main page
                     }
                 }
@@ -141,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
+
     }
 
     @Override
@@ -213,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             year_x=year;
             month_x= monthOfYear;
             day_x= dayOfMonth;
-            dateBut.setText( day_x + " / " + month_x + " / " + year_x);
+            dateBut.setText( day_x + " / " + (month_x+1) + " / " + year_x);
 
         }
     };
