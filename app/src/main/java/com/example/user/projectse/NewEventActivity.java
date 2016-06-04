@@ -1,10 +1,13 @@
 package com.example.user.projectse;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -20,11 +23,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 
 public class NewEventActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
@@ -70,6 +75,7 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
 
                     else        // if all inputs are valid create event object to send to database
                     {
+                        int reminders_amount=3;
                         Time time=new Time(0);
                         time.setHours(hour_x);
                         time.setMinutes(minute_x);
@@ -84,6 +90,19 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
                        // Toast.makeText(context, " title: "+event.title +" loction: " +  event.location +" type: "+ event.eventType+ " Date: " + event.date.toString()+ d.toString()+ " time: "+ event.time.toString(), Toast.LENGTH_LONG).show();
                         // send event object to database
                         database.insertEvent(event);
+
+                        Calendar c=Calendar.getInstance();
+                        c.set(d.getYear(), d.getMonth(), d.getDay(), time.getHours(), time.getMinutes());
+                        c.add(Calendar.SECOND,15 );
+                        for(int i=0;i<reminders_amount;i++)
+                        {
+                                reminders(c,event.getTitle());
+                                c.add(Calendar.SECOND, -i*60);
+                                Toast.makeText(context, "event in  "+i+"minutes" , Toast.LENGTH_LONG).show();
+
+                        }
+
+                        Toast.makeText(context, "reminder " , Toast.LENGTH_LONG).show();
                         //  return to main page
                         finish();
                     }
@@ -206,5 +225,26 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         }
         return super.onOptionsItemSelected(item);
     }
+    public void reminders(Calendar c,String s)
+    {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+        String str= "event: " + s + " " + c.getTime().toString();
+        notificationIntent.putExtra("desc",str);
+        notificationIntent.addCategory("android.intent.category.DEFAULT");
+        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), broadcast);
+        Toast.makeText(getApplicationContext(),  c.getTime().toString(), Toast.LENGTH_LONG).show();
+    }
+
+
 }
+
+
+
+
+
+
+
 

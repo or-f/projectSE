@@ -20,7 +20,7 @@ public class Event {
         this.location = location;
         this.eventType = eventType;
         this.title = title;
-        Date d=date;
+       /* Date d=date;
         int type=0;   // how many reminders to create determined by the event type
         if(eventType=="Test")
             type=3;
@@ -42,7 +42,7 @@ public class Event {
             day=day-7;
             d.setDate(day);         ////###UNCOMPLETED: resolve decrementing issue (need to decrement date and not only day)
             // the amount of decrementing should be deteremined
-        }
+        }*/
          id=-1;
 
     }
@@ -53,7 +53,7 @@ public class Event {
         this.location = location;
         this.eventType = eventType;
         this.title = title;
-        Date d=date;
+        /*Date d=date;
         int type=0;   // how many reminders to create determined by the event type
         if(eventType=="Test")
             type=3;
@@ -76,7 +76,7 @@ public class Event {
             d.setDate(day);         ////###UNCOMPLETED: resolve decrementing issue (need to decrement date and not only day)
             // the amount of decrementing should be deteremined
         }
-        id=-1;
+        id=-1;*/
 
     }
     public void addReminder(Date d, Time t, String desc) // add reminder to the array
