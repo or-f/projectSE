@@ -16,12 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -37,16 +35,8 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
     Spinner spinner;
     TextView title_x, location_x;
     String typeOfEvent;
-
-/// integration
-
-    private List<Event> EventList;
-    private ListView listView;
+    DBHelper database;
     private TextView EventName, EventDate, EventType;
-    private EventsAdapter adapter;
-    EventsHandler db;
-/// integration
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +45,8 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         showDialogOnButtonClick();
-
-/// integration
-        listView = (ListView) findViewById(R.id.eventList);
-        db = new EventsHandler(this);
-        EventList = db.getAllContacts();
-        adapter = new EventsAdapter(this, EventList);
-        listView.setAdapter(adapter);
-/// integration
-
-        //   A D D    B U T T O N =fab
+        database = new DBHelper(this);
+        //   A D D    B U T T O N ==fab
         // when clicking on the Add button a new event is created using the data from the user
         // the event object is passed to the database:
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -88,30 +70,21 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
 
                     else        // if all inputs are valid create event object to send to database
                     {
-
                         Time time=new Time(0);
                         time.setHours(hour_x);
                         time.setMinutes(minute_x);
                         time.setSeconds(0);
-
                         Date d=new Date(year_x,month_x,day_x);
                         d.setDate(day_x);
                         d.setMonth(month_x);
                         d.setYear(year_x-1900);
                         // create the Event object
                         Event event =new Event(d,time,location_x.getText().toString(),typeOfEvent,title_x.getText().toString());
-
                         //TEST to see the event created:
-                        Toast.makeText(context, " title: "+event.title +" loction: " +  event.location +" type: "+ event.eventType+ " Date: " + event.date.toString()+ d.toString()+ " time: "+ event.time.toString(), Toast.LENGTH_LONG).show();
-
-                        // #### TO DO: send event object to database
-
-                        int id = db.addContact(event);
-                        event.setId(id);
-                        EventList.add(event);
-                        adapter.notifyDataSetChanged();
-
-                        // ####        return to main page
+                       // Toast.makeText(context, " title: "+event.title +" loction: " +  event.location +" type: "+ event.eventType+ " Date: " + event.date.toString()+ d.toString()+ " time: "+ event.time.toString(), Toast.LENGTH_LONG).show();
+                        // send event object to database
+                        database.insertEvent(event);
+                        //  return to main page
                         finish();
                     }
                 }
@@ -149,14 +122,11 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         String item = parent.getItemAtPosition(position).toString();
         typeOfEvent=item;   // save the type of the event
         // (TEST) Show selected spinner item on screen
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
-
-
-
 
     public void showDialogOnButtonClick() /// buttons function
     {
@@ -167,10 +137,8 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
             public void onClick(View v) {
                 showDialog(DIALOG_ID2);
 
-
             }
         });
-
         dateBut.setOnClickListener (
 
                 new View.OnClickListener() {
@@ -218,8 +186,6 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         }
     };
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -238,7 +204,6 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
