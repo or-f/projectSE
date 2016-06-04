@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/idTxt"
+        android:layout_above="@+id/nameTxt"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/nameTxt"
+        android:layout_marginLeft="36dp"
+        android:layout_marginStart="36dp"
+        android:layout_above="@+id/locTxt"
+        android:layout_toRightOf="@+id/dateTxt"
+        android:layout_toEndOf="@+id/dateTxt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/locTxt"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/dateTxt"
+        android:layout_alignLeft="@+id/nameTxt"
+        android:layout_alignStart="@+id/nameTxt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/dateTxt"
+        android:layout_marginTop="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/timeTxt"
+        android:layout_alignStart="@+id/timeTxt" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/timeTxt"
+        android:layout_below="@+id/dateTxt"
+        android:layout_alignLeft="@+id/idTxt"
+        android:layout_alignStart="@+id/idTxt"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/typeTxt"
+        android:layout_alignBaseline="@+id/timeTxt"
+        android:layout_alignBottom="@+id/timeTxt"
+        android:layout_toRightOf="@+id/nameTxt"
+        android:layout_toEndOf="@+id/nameTxt"
+        android:layout_marginLeft="44dp"
+        android:layout_marginStart="44dp" />
+
+</RelativeLayout>
