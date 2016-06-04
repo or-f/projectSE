@@ -11,44 +11,38 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
-            <!--//android:theme="@style/AppTheme.NoActionBar">-->
+
+            <!-- //android:theme="@style/AppTheme.NoActionBar"> -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.media.action.IMAGE_CAPTURE" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.IMAGE_CAPTURE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
-        <activity android:name=".NotificationActivity" />
-            <!-- News Feed Activity -->
-            <activity android:name="com.example.user.projectse.NewEventActivity" ></activity>
 
-           <!-- -->
-            <!--&lt;!&ndash; Friends Activity &ndash;&gt;-->
-            <!--<activity android:name="com.androidhive.dashboard.FriendsActivity" ></activity>-->
-
-            <!--&lt;!&ndash; Messages Activity &ndash;&gt;-->
-            <!--<activity android:name="com.androidhive.dashboard.MessagesActivity" ></activity>-->
-
-            <!--&lt;!&ndash; Places Activity &ndash;&gt;-->
-            <!--<activity android:name="com.androidhive.dashboard.PlacesActivity" ></activity>-->
-
-            <!--&lt;!&ndash; Events Activity &ndash;&gt;-->
-            <!--<activity android:name="com.androidhive.dashboard.EventsActivity" ></activity>-->
-
-            <!--&lt;!&ndash; Photos Activity &ndash;&gt;-->
-            <!--<activity android:name="com.androidhive.dashboard.PhotosActivity" ></activity>-->
+        <!-- News Feed Activity -->
+        <activity android:name=".NewEventActivity" />
+        <activity android:name=".ViewActivity" />
+        <!--  -->
+        <!-- &lt;!&ndash; Friends Activity &ndash;&gt; -->
+        <!-- <activity android:name="com.androidhive.dashboard.FriendsActivity" ></activity> -->
 
 
-        <receiver android:name=".AlarmReceiver">
-            <intent-filter>
-                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
+        <!-- &lt;!&ndash; Messages Activity &ndash;&gt; -->
+        <!-- <activity android:name="com.androidhive.dashboard.MessagesActivity" ></activity> -->
+
+
+        <!-- &lt;!&ndash; Places Activity &ndash;&gt; -->
+        <!-- <activity android:name="com.androidhive.dashboard.PlacesActivity" ></activity> -->
+
+
+        <!-- &lt;!&ndash; Events Activity &ndash;&gt; -->
+        <!-- <activity android:name="com.androidhive.dashboard.EventsActivity" ></activity> -->
+
+
+        <!-- &lt;!&ndash; Photos Activity &ndash;&gt; -->
+        <!-- <activity android:name="com.androidhive.dashboard.PhotosActivity" ></activity> -->
+
     </application>
 
 </manifest>
