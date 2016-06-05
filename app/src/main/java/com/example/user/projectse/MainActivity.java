@@ -62,16 +62,8 @@ public class MainActivity extends Activity {
                 public void onClick(View view) {
                     // Launching News Feed Screen
                     Context context =  getApplicationContext();
-                    Cursor s= db.getAllEvents();
-                    if(s.getCount()==0){
-                        Toast.makeText(context,"no events found",Toast.LENGTH_LONG).show();
-                        return;}
-                    StringBuffer buffer = new StringBuffer();
-                    while(s.moveToNext()) {
-                        buffer.append("ID:" + s.getString(0) + "  Title: " + s.getString(1));
-                    }
-
-                    Toast.makeText(context,buffer.toString(),Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(context, ViewActivity.class);
+                    startActivity(i);
 
 
                 }
