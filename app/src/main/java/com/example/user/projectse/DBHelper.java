@@ -83,10 +83,13 @@ public class DBHelper  extends SQLiteOpenHelper {
         return res;
     }
 
-    public Integer deletePerson(Integer id) {
+    public Integer deletePerson(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(EVENT_TABLE_NAME,
+
+        Integer id_deleted= db.delete(EVENT_TABLE_NAME,
                 EVENT_COLUMN_ID + " = ? ", new String[] { Integer.toString(id) });
+
+        return id_deleted;
     }
 
 

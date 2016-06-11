@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -20,13 +21,15 @@ import android.widget.Toast;
 public class ViewActivity extends Activity{
 
 
-
+    DBHelper locdb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ////setSupportActionBar(toolbar);
+        locdb = new DBHelper(this);
+        Cursor cursor = locdb.getAllEvents();
         populateListView();
 
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -40,35 +43,76 @@ public class ViewActivity extends Activity{
        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void populateListView()
+    public void populateListView()
     {
-        DBHelper locdb = new DBHelper(this);
-        Cursor cursor = locdb.getAllEvents();
-        //Toast code for printing the whole db
-        if(cursor.getCount()==0){
-            Toast.makeText(getApplicationContext(), "no events found", Toast.LENGTH_LONG).show();
-            return;}
-        StringBuffer buffer = new StringBuffer();
-        while(cursor.moveToNext()) {
-            buffer.append("ID:" + cursor.getString(0) + "  Title: " + cursor.getString(1));
-        }
-        Toast.makeText(getApplicationContext(), buffer.toString(), Toast.LENGTH_LONG).show();
-        //end of toast code
-
         ListView listView = (ListView) findViewById(R.id.listView);
-        //String[] columns = new String[]{DBHelper.EVENT_COLUMN_ID, DBHelper.EVENT_COLUMN_TITLE, DBHelper.EVENT_COLUMN_LOCATION, DBHelper.EVENT_COLUMN_DATE, DBHelper.EVENT_COLUMN_TIME, DBHelper.EVENT_COLUMN_TYPE};
-        //int[] to = new int[] {R.id.idTxt,R.id.nameTxt,R.id.locTxt,R.id.timeTxt,R.id.dateTxt,R.id.typeTxt};
+
         Cursor cur = locdb.getAllEvents();
         ListViewAdapter dataAdapter = new ListViewAdapter(this, cur,0);
         listView.setAdapter(dataAdapter);
-
-
-
-
-
-
     }
 
+    public class ListViewAdapter extends CursorAdapter {
 
+        DBHelper tmpdb;
+        public ListViewAdapter(Context context, Cursor c, boolean autoRequery) {
+            super(context, c, autoRequery);
+
+        }
+
+        public ListViewAdapter(Context context, Cursor c, int flags) {
+            super(context, c, flags);
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            return LayoutInflater.from(context).inflate(R.layout.list_layout, parent, false);
+        }
+
+        @Override
+        public void bindView(final View view, final Context context, final Cursor cursor) {
+            // Find fields to populate in inflated template
+            tmpdb = new DBHelper(context);
+            Button EditRowBut = (Button) view.findViewById(R.id.buttonEdit);
+            Button DelRowBut = (Button) view.findViewById(R.id.buttonDel);
+            final TextView tvId = (TextView) view.findViewById(R.id.idTxt);
+            TextView tvName = (TextView) view.findViewById(R.id.nameTxt);
+            TextView tvLocation = (TextView) view.findViewById(R.id.locTxt);
+            TextView tvDate = (TextView) view.findViewById(R.id.dateTxt);
+            TextView tvTime = (TextView) view.findViewById(R.id.timeTxt);
+            TextView tvType = (TextView) view.findViewById(R.id.typeTxt);
+            // Extract properties from cursor
+            final String id = cursor.getString(0);
+            final String title = cursor.getString(1);
+            String location = cursor.getString(2);
+            String date = cursor.getString(3);
+            String time = cursor.getString(4);
+            String type = cursor.getString(5);
+            // Populate fields with extracted properties
+            tvId.setText(id);
+            tvName.setText(title);
+            tvLocation.setText(location);
+            tvDate.setText(date);
+            tvTime.setText(time);
+            tvType.setText(type);
+            DelRowBut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int r = cursor.getInt(cursor.getColumnIndex("_id"));
+                    int delete = Integer.parseInt(id);
+                    tmpdb.deletePerson(delete);
+                    notifyDataSetChanged();
+                    Toast.makeText(context, title + " was deleted", Toast.LENGTH_LONG).show();
+populateListView();
+                }
+            });
+            EditRowBut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+    }
 
 }
