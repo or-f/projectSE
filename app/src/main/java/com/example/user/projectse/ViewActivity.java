@@ -2,6 +2,7 @@ package com.example.user.projectse;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -98,10 +99,12 @@ public class ViewActivity extends Activity{
             DelRowBut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int r = cursor.getInt(cursor.getColumnIndex("_id"));
+
+                    //int r = cursor.getInt(cursor.getColumnIndex("_id"));
                     int delete = Integer.parseInt(id);
                     tmpdb.deletePerson(delete);
                     notifyDataSetChanged();
+
                     Toast.makeText(context, title + " was deleted", Toast.LENGTH_LONG).show();
 populateListView();
                 }
@@ -109,9 +112,19 @@ populateListView();
             EditRowBut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int edit = Integer.parseInt(id);
+                    tmpdb.deletePerson(edit);
+                    notifyDataSetChanged();
+                    Intent i = new Intent(getApplicationContext(), NewEventActivity.class);
+                    startActivity(i);
+                    //tmpdb.updateEvent();
+                    finish();
 
+                    //populateListView();
                 }
-            });
+            }
+
+            );
         }
     }
 
