@@ -12,7 +12,8 @@
         android:id="@+id/idTxt"
         android:layout_above="@+id/nameTxt"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/dateTxt"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="35dp"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/timeTxt"
         android:layout_alignStart="@+id/timeTxt" />
@@ -57,7 +58,8 @@
         android:layout_below="@+id/dateTxt"
         android:layout_alignLeft="@+id/idTxt"
         android:layout_alignStart="@+id/idTxt"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -65,12 +67,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/typeTxt"
-        android:layout_alignBaseline="@+id/timeTxt"
-        android:layout_alignBottom="@+id/timeTxt"
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp"
+        android:layout_below="@+id/nameTxt"
         android:layout_toRightOf="@+id/nameTxt"
-        android:layout_toEndOf="@+id/nameTxt"
-        android:layout_marginLeft="44dp"
-        android:layout_marginStart="44dp" />
+        android:layout_toEndOf="@+id/nameTxt" />
 
     <Button
         android:layout_width="wrap_content"
@@ -79,7 +80,12 @@
         android:id="@+id/buttonEdit"
         android:layout_alignBottom="@+id/nameTxt"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/idTxt"
+        android:layout_alignLeft="@+id/buttonDel"
+        android:layout_alignStart="@+id/buttonDel"
+        android:textSize="11dp"
+        android:elegantTextHeight="false" />
 
     <Button
         android:layout_width="wrap_content"
@@ -88,6 +94,8 @@
         android:id="@+id/buttonDel"
         android:layout_below="@+id/buttonEdit"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/locTxt"
+        android:textSize="11dp" />
 
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -16,6 +17,10 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class ViewActivity extends Activity{
     String temp;
@@ -30,7 +35,7 @@ public class ViewActivity extends Activity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ////setSupportActionBar(toolbar);
         locdb = new DBHelper(this);
-        Cursor cursor = locdb.getAllEvents();
+        Cursor cursor = locdb.getAllupcomingEvents();
         populateListView();
          alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -48,9 +53,11 @@ public class ViewActivity extends Activity{
     {
         ListView listView = (ListView) findViewById(R.id.listView);
 
-        Cursor cur = locdb.getAllEvents();
+        Cursor cur = locdb.getAllupcomingEvents();
         ListViewAdapter dataAdapter = new ListViewAdapter(this, cur,0);
         listView.setAdapter(dataAdapter);
+
+        //Collections.sort(listView,);
     }
 
     public class ListViewAdapter extends CursorAdapter {
@@ -64,8 +71,43 @@ public class ViewActivity extends Activity{
         }
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return LayoutInflater.from(context).inflate(R.layout.list_layout, parent, false);
+            View newView=LayoutInflater.from(context).inflate(R.layout.list_layout, parent, false);
+            Calendar c=Calendar.getInstance();
+            c.add(Calendar.MONTH,-1);
+            c.add(Calendar.DAY_OF_MONTH,1);
+            Date current = new Date(c.getTime().getTime());
+            if(cursor.getString(cursor.getColumnIndex("date")).compareTo(current.toString())<=0) {
+                newView.setBackgroundColor(Color.rgb(169, 5, 0));
+                return newView ;
+            }
+            c.add(Calendar.DAY_OF_MONTH,1);
+            current = new Date(c.getTime().getTime());
+            if(cursor.getString(cursor.getColumnIndex("date")).compareTo(current.toString())<=0) {
+                newView.setBackgroundColor(Color.rgb(255, 28, 0));
+                return newView ;
+            }
+            c.add(Calendar.DAY_OF_MONTH,2);
+            current = new Date(c.getTime().getTime());
+            if(cursor.getString(cursor.getColumnIndex("date")).compareTo(current.toString())<=0) {
+                newView.setBackgroundColor(Color.rgb(255, 126, 0));
+                return newView ;
+            }
+            c.add(Calendar.DAY_OF_MONTH,2);
+            current = new Date(c.getTime().getTime());
+            if(cursor.getString(cursor.getColumnIndex("date")).compareTo(current.toString())<=0) {
+                newView.setBackgroundColor(Color.rgb(255, 250, 0));
+                return newView ;
+            }
+            c.add(Calendar.DAY_OF_MONTH,2);
+            current = new Date(c.getTime().getTime());
+            if(cursor.getString(cursor.getColumnIndex("date")).compareTo(current.toString())<=0) {
+                newView.setBackgroundColor(Color.rgb(73, 255, 0));
+                return newView ;
+            }
+            newView.setBackgroundColor(Color.rgb(255, 174, 0));
+            return newView ;
         }
+
         @Override
         public void bindView(final View view, final Context context, final Cursor cursor) {
             // Find fields to populate in inflated template
@@ -78,18 +120,25 @@ public class ViewActivity extends Activity{
             TextView tvDate = (TextView) view.findViewById(R.id.dateTxt);
             TextView tvTime = (TextView) view.findViewById(R.id.timeTxt);
             TextView tvType = (TextView) view.findViewById(R.id.typeTxt);
+
             // Extract properties from cursor
             final String id = cursor.getString(0);
             final String title = cursor.getString(1);
             String location = cursor.getString(2);
-            String date = cursor.getString(3);
+            Date date = Date.valueOf(cursor.getString(3));
+            Calendar c=Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.MONTH,1);
+
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+            String date2=fmt.format(c.getTime());
             String time = cursor.getString(4);
             String type = cursor.getString(5);
             // Populate fields with extracted properties
             tvId.setText(id);
             tvName.setText(title);
             tvLocation.setText(location);
-            tvDate.setText(date);
+            tvDate.setText(date2);
             tvTime.setText(time);
             tvType.setText(type);
             DelRowBut.setOnClickListener(new View.OnClickListener() {
@@ -117,27 +166,12 @@ public class ViewActivity extends Activity{
                                         cancelNotifications(d);
                                         deleteid = "";
                                     }
-                                    /*
-                                    while (array.charAt(i) != '*') {
-
-                                        while (array.charAt(i) != ',' && array.charAt(i) != '*') {
-                                            ids = ids.concat(String.valueOf(array.charAt(i)));
-                                            deleteid = deleteid.concat(String.valueOf(array.charAt(i)));
-                                            i++;
-                                        }
-                                        int d = Integer.parseInt(deleteid);
-                                        cancelNotifications(d);
-                                        // a.cancelNotifications(Integer.parseInt(deleteid));
-                                        ids = ids.concat(" ");
-                                        i++;
-                                    }*/
                                 }
                                 //s = ids;
                                 Toast.makeText(getApplicationContext(), "deleted: " + ids, Toast.LENGTH_LONG);
                             }
                         }
                     }
-
                     tmpdb.deletePerson(delete, temp);
                     //tmpdb.deletePerson(delete);
                     notifyDataSetChanged();

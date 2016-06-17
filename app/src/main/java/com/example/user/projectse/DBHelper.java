@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Date;
+import java.util.Calendar;
 
 
 public class DBHelper  extends SQLiteOpenHelper {
@@ -42,6 +44,7 @@ public class DBHelper  extends SQLiteOpenHelper {
                         EVENT_COLUMN_DATE + " TEXT, " + EVENT_COLUMN_TIME + " TEXT, " +
                         EVENT_COLUMN_TYPE + " TEXT, " + EVENT_REMINDERS + " TEXT  )"
         );
+
     }
 
     @Override
@@ -114,15 +117,27 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     public Cursor getEvent(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery( "SELECT * FROM " + EVENT_TABLE_NAME + " WHERE " +
-                EVENT_COLUMN_ID + "=?", new String[] { Integer.toString(id) } );
+        Cursor res = db.rawQuery("SELECT * FROM " + EVENT_TABLE_NAME + " WHERE " +
+                EVENT_COLUMN_ID + "=?", new String[]{Integer.toString(id) } );
         return res;
 
     }
 
     public Cursor getAllEvents() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery( "SELECT * FROM " + EVENT_TABLE_NAME, null );
+
+        Cursor res = db.rawQuery( "SELECT * FROM " + EVENT_TABLE_NAME +" ORDER BY "+ EVENT_COLUMN_DATE+" ASC ", null );
+        return res;
+    }
+
+    public Cursor getAllupcomingEvents() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar c=Calendar.getInstance();
+        c.add(Calendar.MONTH,-1);
+        c.add(Calendar.DAY_OF_MONTH,-1);
+        Date current = new Date(c.getTime().getTime());
+        Cursor res = db.rawQuery( "SELECT * FROM " + EVENT_TABLE_NAME +" WHERE " +EVENT_COLUMN_DATE+ "> ?"+" ORDER BY "+ EVENT_COLUMN_DATE+" ASC ",  new String[] { current.toString()} );
+
         return res;
     }
 
