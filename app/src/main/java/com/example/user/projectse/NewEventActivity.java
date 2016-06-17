@@ -1,5 +1,4 @@
 package com.example.user.projectse;
-
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -23,9 +22,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -42,7 +41,13 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
     String typeOfEvent;
     DBHelper database;
     private TextView EventName, EventDate, EventType;
-
+    Intent alarmIntent;
+    PendingIntent pendingIntent;
+    int mNotificationCount;
+    public AlarmManager alarmManager;
+    Date d;
+    static final String NOTIFICATION_COUNT = "notificationCount";
+    private static final String TAG = "ALARM! ";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,10 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         showDialogOnButtonClick();
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            mNotificationCount = savedInstanceState.getInt(NOTIFICATION_COUNT);
+        }
         database = new DBHelper(this);
         //   A D D    B U T T O N ==fab
         // when clicking on the Add button a new event is created using the data from the user
@@ -60,7 +69,6 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
                 @Override
                 public void onClick(View v) {  // onclick ADD button
                     Context context=  getApplicationContext();  //function for using Toast (for displaying messages on screen)
-
                     // verify all inputs are valid
                     if(title_x.getText().length()<1)    // validate title
                         Toast.makeText(context, "enter title", Toast.LENGTH_LONG).show();
@@ -75,48 +83,52 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
 
                     else        // if all inputs are valid create event object to send to database
                     {
-                        int reminders_amount=3;
+                        int reminders_amount=6;
                         Time time=new Time(0);
                         time.setHours(hour_x);
                         time.setMinutes(minute_x);
-                        time.setSeconds(0);
+                        time.setSeconds(0);/*
                         Date d=new Date(year_x,month_x,day_x);
                         d.setDate(day_x);
                         d.setMonth(month_x);
-                        d.setYear(year_x-1900);
+                        d.setYear(year_x-1900);*/
                         // create the Event object
                         Event event =new Event(d,time,location_x.getText().toString(),typeOfEvent,title_x.getText().toString());
                         //TEST to see the event created:
-                       // Toast.makeText(context, " title: "+event.title +" loction: " +  event.location +" type: "+ event.eventType+ " Date: " + event.date.toString()+ d.toString()+ " time: "+ event.time.toString(), Toast.LENGTH_LONG).show();
+                       Toast.makeText(context, " title: "+event.title +" loction: " +  event.location +" type: "+ event.eventType+ " Date: " + event.date.toString()+ d.toString()+ " time: "+ event.time.toString(), Toast.LENGTH_LONG).show();
                         // send event object to database
-                        database.insertEvent(event);
 
                         Calendar c=Calendar.getInstance();
-                        c.set(d.getYear(), d.getMonth(), d.getDay(), time.getHours(), time.getMinutes());
-                        c.add(Calendar.SECOND,15 );
+                        //c.set(d.getYear(), d.getMonth(), d.getDay(), time.getHours(), time.getMinutes());
+                        c.setTime(d);
+                        c.set(1, year_x); //field YEAR=1
+                        c.set(2,month_x); //field month=1
+                        c.set(5,day_x); //field DAY_OF_MONTH=5
+                        c.set(11,hour_x);// HOUR_OF_DAY = 11;
+                        c.set(12, minute_x);// MINUTE = 12;
+                        c.set(13, 0);//SECOND = 13
+                        c.set(14, 0);// MILLISECOND = 14;
+                        c.add(Calendar.SECOND, -180);
                         for(int i=0;i<reminders_amount;i++)
                         {
-                                reminders(c,event.getTitle());
-                                c.add(Calendar.SECOND, -i*60);
-                                Toast.makeText(context, "event in  "+i+"minutes" , Toast.LENGTH_LONG).show();
-
+                            updateUI();
+                            event.addReminder(mNotificationCount);
+                            setAlarm(c, event.getTitle());
+                                c.add(Calendar.SECOND, 25);
+                                incrementCount();
                         }
-
-                        Toast.makeText(context, "reminder " , Toast.LENGTH_LONG).show();
+                        database.insertEvent(event);
                         //  return to main page
                         finish();
                     }
                 }
             });
         }
-
-
         title_x= (EditText)findViewById(R.id.titleText); // link variable title_x to EditText title
         location_x= (EditText)findViewById(R.id.locationText);// link variable location_x to EditText location
         spinner = (Spinner) findViewById(R.id.spinnere);// link variable spinner to the spinner on content_main
         // Spinner click listener
         spinner.setOnItemSelectedListener(this);
-
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
         categories.add("Select Event Type");
@@ -132,9 +144,7 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
-
     }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
@@ -146,7 +156,6 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
-
     public void showDialogOnButtonClick() /// buttons function
     {
         dateBut = (Button)findViewById(R.id.dateButton);
@@ -155,16 +164,13 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
             @Override
             public void onClick(View v) {
                 showDialog(DIALOG_ID2);
-
             }
         });
         dateBut.setOnClickListener (
-
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showDialog(DIALOG_ID);
-
                     }
                 }
         );
@@ -201,7 +207,9 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
             month_x= monthOfYear;
             day_x= dayOfMonth;
             dateBut.setText( day_x + " / " + (month_x+1) + " / " + year_x);
-
+            String str="";
+            str=str.concat(Integer.toString(year)+"-"+Integer.toString(monthOfYear)+"-"+Integer.toString(dayOfMonth) );
+            d=Date.valueOf(str);
         }
     };
 
@@ -225,20 +233,70 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         }
         return super.onOptionsItemSelected(item);
     }
-    public void reminders(Calendar c,String s)
-    {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-        String str= "event: " + s + " " + c.getTime().toString();
-        notificationIntent.putExtra("desc",str);
-        notificationIntent.addCategory("android.intent.category.DEFAULT");
-        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), broadcast);
-        Toast.makeText(getApplicationContext(),  c.getTime().toString(), Toast.LENGTH_LONG).show();
+    protected void onStart(){
+        super.onStart();
+        updateUI();
+
+    }
+    //@Override
+    /*
+    protected void onNewIntent(Intent intent ) {
+        Toast.makeText(this, "onNewIntent(), intent = " + intent , Toast.LENGTH_LONG).show();
+        if (intent.getExtras() != null)
+        {
+            Toast.makeText(this, "in onNewIntent = " + intent.getExtras().getString("test"), Toast.LENGTH_LONG).show();
+
+        }
+
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }*/
+
+    public void setAlarm(Calendar c,String s){
+        alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmIntent = new Intent(NewEventActivity.this, AlarmReceiver.class);
+        alarmIntent.putExtra("title",s);
+        alarmIntent.putExtra("date",c.getTime().getTime());
+        alarmIntent.putExtra("count", mNotificationCount);
+
+        pendingIntent =PendingIntent.getBroadcast(NewEventActivity.this, mNotificationCount, alarmIntent, 0);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTime().getTime(), pendingIntent);
+        Long time=c.getTime().getTime();
+        SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String dateText = df2.format(time);
+
+        Toast.makeText(this, "NewEventActivity::setAlarm:: id's: "+s+" Alarm Scheduled for: "
+                + dateText+ " notification count="+mNotificationCount,Toast.LENGTH_LONG).show();
+    }
+    private int getInterval(){
+        int seconds = 60;
+        int milliseconds = 1000;
+        int repeatMS = seconds  * milliseconds;
+        return repeatMS;
+    }
+    public void updateUI(){
+        mNotificationCount =((MyAlarm) this.getApplication()).getNotificationCount();
     }
 
+    public void incrementCount(){
+        ((MyAlarm) this.getApplication()).incrementCount();
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(this.getIntent().getExtras() != null){
+            Toast.makeText(this,"NewEventActivity::onResume:: extras: " + this.getIntent().getExtras(), Toast.LENGTH_LONG).show();
+            updateUI();
+
+        }
+    }
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putInt(NOTIFICATION_COUNT, mNotificationCount);
+        super.onSaveInstanceState(savedInstanceState);
+    }
 }
 
 
