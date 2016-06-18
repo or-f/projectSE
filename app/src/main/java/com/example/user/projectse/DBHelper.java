@@ -125,7 +125,6 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     public Cursor getAllEvents() {
         SQLiteDatabase db = this.getReadableDatabase();
-
         Cursor res = db.rawQuery( "SELECT * FROM " + EVENT_TABLE_NAME +" ORDER BY "+ EVENT_COLUMN_DATE+" ASC ", null );
         return res;
     }

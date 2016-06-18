@@ -62,6 +62,8 @@ public class ProfileHelper extends SQLiteOpenHelper {
     public boolean isEmpty() {
         SQLiteDatabase pdb = getReadableDatabase();
         Cursor res = pdb.rawQuery("SELECT * FROM " + PROFILE_TABLE_NAME , null);
-       return res.isNull(res.getColumnIndex("PROFILE_COLUMN_NAME"));
+        if( res.moveToFirst())
+            return res.isNull(res.getColumnIndex("PROFILE_COLUMN_NAME"));
+        return true;
     }
 }

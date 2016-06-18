@@ -8,6 +8,39 @@
     android:theme="@style/mytheme"
     style="@style/mytheme">
     <!--  News Feed Button -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0f0f0f"
+        android:backgroundTintMode="src_atop"
+        android:foregroundTintMode="src_over"
+        android:id="@+id/popup"
+        android:visibility="visible"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:foregroundTint="#000000"
+        android:layout_above="@+id/btn_Profile"
+        android:foregroundGravity="top"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:id="@+id/but_sign"
+            android:layout_gravity="center_horizontal|bottom" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="477dp"
+            android:id="@+id/sign_img"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/sign"
+            android:tintMode="src_atop"
+            android:foregroundGravity="top" />
+
+    </FrameLayout>
+
     <Button
         android:id="@+id/add_event_but"
         style="@style/DashboardButton"
@@ -19,7 +52,10 @@
         android:layout_toEndOf="@+id/view_but"
         android:layout_marginLeft="79dp"
         android:layout_marginStart="79dp"
-        android:background="#303031" />
+        android:background="#303031"
+        android:typeface="normal"
+        android:visibility="visible"
+        android:foregroundGravity="bottom" />
 
     <!--  Friends Button -->
     <Button
