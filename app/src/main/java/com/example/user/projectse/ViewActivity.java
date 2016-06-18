@@ -11,22 +11,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-public class ViewActivity extends Activity{
+public class ViewActivity extends Activity implements AdapterView.OnItemSelectedListener{
     String temp;
     DBHelper locdb;
     Intent alarmIntent;
     PendingIntent pendingIntent;
     public AlarmManager alarmManager;
+    Spinner spinner;
+    String typeOfEvent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,24 @@ public class ViewActivity extends Activity{
         Cursor cursor = locdb.getAllupcomingEvents();
         populateListView();
          alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        spinner = (Spinner) findViewById(R.id.filter);// link variable spinner to the spinner on content_main
+        // Spinner click listener
+        spinner.setOnItemSelectedListener(this);
+        // Spinner Drop down elements
+        List<String> categories = new ArrayList<>();
+        categories.add("Select Event Type");
+        categories.add("Test");
+        categories.add("Assignment");
+        categories.add("Quiz");
+        categories.add("Personal");
+        categories.add("Other");
+        spinner.setPrompt("select event type");
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +80,30 @@ public class ViewActivity extends Activity{
         Cursor cur = locdb.getAllupcomingEvents();
         ListViewAdapter dataAdapter = new ListViewAdapter(this, cur,0);
         listView.setAdapter(dataAdapter);
+    }
 
-        //Collections.sort(listView,);
+
+    public void populateListViewbyType(String type)
+    {
+        ListView listView = (ListView) findViewById(R.id.listView);
+
+        Cursor cur =locdb.getAllupcomingAssignments(typeOfEvent);
+        ListViewAdapter dataAdapter = new ListViewAdapter(this, cur,0);
+        listView.setAdapter(dataAdapter);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        typeOfEvent = parent.getItemAtPosition(position).toString();
+        if(typeOfEvent.length()>10)
+            populateListView();
+        else
+        populateListViewbyType(typeOfEvent);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     public class ListViewAdapter extends CursorAdapter {

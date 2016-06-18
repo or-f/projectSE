@@ -139,6 +139,18 @@ public class DBHelper  extends SQLiteOpenHelper {
 
         return res;
     }
+    public Cursor getAllupcomingAssignments(String type) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Calendar c=Calendar.getInstance();
+        c.add(Calendar.MONTH,-1);
+        c.add(Calendar.DAY_OF_MONTH,-1);
+        Date current = new Date(c.getTime().getTime());
+        Cursor res = db.rawQuery( "SELECT * FROM " + EVENT_TABLE_NAME +" WHERE " +EVENT_COLUMN_DATE+
+                "> ?"+ " AND "+ EVENT_COLUMN_TYPE + " =? " + " ORDER BY "+ EVENT_COLUMN_DATE+" ASC "
+                ,  new String[] { current.toString(), type} );
+
+        return res;
+    }
 
     public Integer deletePerson(int id,String s) {
         SQLiteDatabase db = this.getWritableDatabase();

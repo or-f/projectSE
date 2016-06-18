@@ -22,5 +22,31 @@
         android:background="#1d1c1c"
         android:padding="16dp"
         android:divider="#1d1c1c"
-        android:dividerHeight="10dp" />
+        android:dividerHeight="10dp"
+        android:layout_below="@+id/filter" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/filter"
+        android:layout_alignParentTop="true"
+        android:spinnerMode="dropdown"
+        style="@style/mythemedombo"
+        android:layout_toRightOf="@+id/textView2"
+        android:theme="@style/mythemedombo"
+        android:textColor="#ffffff"
+        android:scrollIndicators="left|start"
+        android:background="#bb6a6a6a" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter by type: "
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#ffffff"
+        android:textSize="16dp"
+        android:textStyle="bold" />
 </RelativeLayout>

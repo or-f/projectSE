@@ -109,8 +109,6 @@ else {
                         Context context = getApplicationContext();
                         Intent i = new Intent(context, ViewActivity.class);
                         startActivity(i);
-
-
                     }
                 });
 
