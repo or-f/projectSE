@@ -20,7 +20,7 @@ public class ProfileHelper extends SQLiteOpenHelper {
     public static final String PROFILE_COLUMN_DIAGNOSE= "diagnose";
 
     public ProfileHelper(Context context) {
-        super(context, "UserProfile.db" , null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -41,13 +41,13 @@ public class ProfileHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase pdb, int oldVersion, int newVersion) {
-        pdb.execSQL("DROP TABLE IF EXISTS " + PROFILE_TABLE_NAME);
+        pdb.execSQL("DROP TABLE IF EXISTS " + PROFILE_TABLE_NAME );
         onCreate(pdb);
     }
 
     public boolean insertProfile(Student student) {
 
-        SQLiteDatabase pdb = getWritableDatabase();
+        SQLiteDatabase pdb = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PROFILE_COLUMN_NAME, student.getName());
         contentValues.put(PROFILE_COLUMN_INSTITUDE, student.getUniversity());
@@ -55,15 +55,22 @@ public class ProfileHelper extends SQLiteOpenHelper {
         contentValues.put(PROFILE_COLUMN_AGE, student.getAge());
         contentValues.put(PROFILE_COLUMN_EMAIL, student.getEmailAdd());
         contentValues.put(PROFILE_COLUMN_RITALIN,student.getHasRitalin());
-        contentValues.put(PROFILE_COLUMN_DIAGNOSE,student.getHasDiagnose());
+        contentValues.put(PROFILE_COLUMN_DIAGNOSE, student.getHasDiagnose());
         pdb.insert(PROFILE_TABLE_NAME, null, contentValues);
         return true;
     }
     public boolean isEmpty() {
-        SQLiteDatabase pdb = getReadableDatabase();
-        Cursor res = pdb.rawQuery("SELECT * FROM " + PROFILE_TABLE_NAME , null);
+        SQLiteDatabase pdb = this.getReadableDatabase();
+        Cursor res = pdb.rawQuery("SELECT * FROM " + PROFILE_TABLE_NAME +" WHERE " + PROFILE_COLUMN_ID+ " = ? ", new String[]{Integer.toString(1) } );
         if( res.moveToFirst())
-            return res.isNull(res.getColumnIndex("PROFILE_COLUMN_NAME"));
+            return res.isNull(res.getColumnIndex(PROFILE_COLUMN_NAME));
         return true;
+    }
+
+    public Integer deletePerson() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Integer id_deleted= db.delete(PROFILE_TABLE_NAME,
+                PROFILE_COLUMN_ID + " = ? ", new String[]{Integer.toString(1)});
+        return id_deleted;
     }
 }

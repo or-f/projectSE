@@ -140,37 +140,8 @@ public class DBHelper  extends SQLiteOpenHelper {
         return res;
     }
 
-
     public Integer deletePerson(int id,String s) {
         SQLiteDatabase db = this.getWritableDatabase();
-        //Cursor cursor =getEvent(id);
-        /*NewEventActivity a=new NewEventActivity();
-        int index= cursor.getColumnIndex("reminders");
-        if (cursor.moveToFirst()) {
-            String array = cursor.getString(index); // 0 matches the index of NUMBER in your projection.
-            if (array != null && array.length() > 1) {
-                if (array.length() > 1) {
-                    String ids = "";
-                    String deleteid = "";
-                    for (int i = 1; i < array.length(); i++) {
-                        while (array.charAt(i) != '*') {
-                            deleteid = "";
-                            while (array.charAt(i) != ',') {
-                                ids = ids.concat(String.valueOf(array.charAt(i)));
-                                deleteid = deleteid.concat(String.valueOf(array.charAt(i)));
-                                i++;
-                            }
-                            int d=Integer.parseInt(deleteid);
-                             new ViewActivity().cancelNotifications(d);
-                           // a.cancelNotifications(Integer.parseInt(deleteid));
-                            ids = ids.concat(" ");
-                            i++;
-                        }
-                    }
-                    s = ids;
-                }
-            }
-        }*/
         Integer id_deleted= db.delete(EVENT_TABLE_NAME,
                 EVENT_COLUMN_ID + " = ? ", new String[] { Integer.toString(id) });
         return id_deleted;

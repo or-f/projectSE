@@ -15,6 +15,7 @@ public class ProfileActivity extends AppCompatActivity {
     EditText name_, university_, dep_, age_, email_;
     CheckBox cbRita, cbDia;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
