@@ -141,7 +141,7 @@ public class ViewActivity extends Activity implements AdapterView.OnItemSelected
             c.add(Calendar.DAY_OF_MONTH,2);
             current = new Date(c.getTime().getTime());
             if(cursor.getString(cursor.getColumnIndex("date")).compareTo(current.toString())<=0) {
-                newView.setBackgroundColor(Color.rgb(255, 250, 0));
+                newView.setBackgroundColor(Color.rgb(73, 250, 0));
                 return newView ;
             }
             c.add(Calendar.DAY_OF_MONTH,2);
@@ -150,7 +150,7 @@ public class ViewActivity extends Activity implements AdapterView.OnItemSelected
                 newView.setBackgroundColor(Color.rgb(73, 255, 0));
                 return newView ;
             }
-            newView.setBackgroundColor(Color.rgb(255, 174, 0));
+            newView.setBackgroundColor(Color.rgb(15, 163, 37));
             return newView ;
         }
 

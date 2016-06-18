@@ -26,6 +26,12 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".NewEventActivity" />
         <activity android:name=".ViewActivity" />
+        <activity android:name=".NotifictionPage"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
         <!--  -->
         <!-- &lt;!&ndash; Friends Activity &ndash;&gt; -->
         <!-- <activity android:name="com.androidhive.dashboard.FriendsActivity" ></activity> -->

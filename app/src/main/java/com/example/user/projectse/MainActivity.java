@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -43,9 +42,7 @@ public class MainActivity extends Activity {
             // Dashboard Friends button
             final Button btn_view = (Button) findViewById(R.id.view_but);
             // Dashboard Messages button
-            final Button btn_messages = (Button) findViewById(R.id.btn_messages);
-            // Dashboard Places button
-            final Button btn_edit = (Button) findViewById(R.id.edit_but);
+
             // Dashboard Events button
             Button btn_profile = (Button) findViewById(R.id.btn_Profile);
             // Dashboard Photos button
@@ -56,9 +53,9 @@ public class MainActivity extends Activity {
                 but_sign.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.VISIBLE);
                 sign.setVisibility(View.VISIBLE);
-                btn_messages.setVisibility(View.INVISIBLE);
+
                 btn_add.setVisibility(View.INVISIBLE);
-                btn_edit.setVisibility(View.INVISIBLE);
+
                 btn_view.setVisibility(View.INVISIBLE);
                 but_sign.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -66,9 +63,9 @@ public class MainActivity extends Activity {
                         // Launching News Feed Screen
                         Context context = getApplicationContext();
                         Intent i = new Intent(context, ProfileActivity.class);
-                        btn_messages.setVisibility(View.VISIBLE);
+
                         btn_add.setVisibility(View.VISIBLE);
-                        btn_edit.setVisibility(View.VISIBLE);
+
                         btn_view.setVisibility(View.VISIBLE);
                         but_sign.setVisibility(View.INVISIBLE);
                         layout.setVisibility(View.INVISIBLE);
@@ -78,9 +75,9 @@ public class MainActivity extends Activity {
                 });
             }
 else {
-                btn_messages.setVisibility(View.VISIBLE);
+
                 btn_add.setVisibility(View.VISIBLE);
-                btn_edit.setVisibility(View.VISIBLE);
+
                 btn_view.setVisibility(View.VISIBLE);
                 but_sign.setVisibility(View.INVISIBLE);
                 layout.setVisibility(View.INVISIBLE);
@@ -109,34 +106,6 @@ else {
                         Context context = getApplicationContext();
                         Intent i = new Intent(context, ViewActivity.class);
                         startActivity(i);
-                    }
-                });
-
-                // Listening Messages button click
-                btn_messages.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        Context context = getApplicationContext();
-                        Toast.makeText(context, "a", Toast.LENGTH_LONG).show();
-                        Cursor s = db.getAllEvents();
-                        Toast.makeText(context, "b", Toast.LENGTH_LONG).show();
-                        String str = s.getString(1);
-                        Toast.makeText(context, str, Toast.LENGTH_LONG).show();
-                        //Intent i = new Intent(context,NewEventActivity.class);
-                        // startActivity(i);
-                    }
-                });
-
-                // Listening to Places button click
-                btn_edit.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        // Launching News Feed Screen
-                        Intent i = new Intent(getApplicationContext(), NewEventActivity.class);
-                        startActivity(i);
-
                     }
                 });
 

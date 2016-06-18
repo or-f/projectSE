@@ -16,12 +16,11 @@
         android:foregroundTintMode="src_over"
         android:id="@+id/popup"
         android:visibility="visible"
+        android:foregroundTint="#000000"
+        android:foregroundGravity="top"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:foregroundTint="#000000"
-        android:layout_above="@+id/btn_Profile"
-        android:foregroundGravity="top"
-        android:layout_marginTop="20dp">
+        android:layout_above="@+id/btn_Profile">
 
         <Button
             android:layout_width="wrap_content"
@@ -31,11 +30,11 @@
             android:layout_gravity="center_horizontal|bottom" />
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="477dp"
+            android:layout_width="wrap_content"
+            android:layout_height="442dp"
             android:id="@+id/sign_img"
-            android:layout_gravity="right|center_vertical"
-            android:src="@drawable/sign"
+            android:layout_gravity="center"
+            android:src="@drawable/sign2"
             android:tintMode="src_atop"
             android:foregroundGravity="top" />
 
@@ -44,24 +43,23 @@
     <Button
         android:id="@+id/add_event_but"
         style="@style/DashboardButton"
-        android:drawableTop="@drawable/add"
+        android:drawableTop="@drawable/add2"
         android:text="add event"
-        android:layout_marginTop="83dp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/view_but"
-        android:layout_toEndOf="@+id/view_but"
-        android:layout_marginLeft="79dp"
-        android:layout_marginStart="79dp"
-        android:background="#303031"
+        android:layout_marginTop="145dp"
         android:typeface="normal"
         android:visibility="visible"
-        android:foregroundGravity="bottom" />
+        android:foregroundGravity="bottom"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="63dp"
+        android:layout_marginEnd="63dp" />
 
     <!--  Friends Button -->
     <Button
         android:id="@+id/view_but"
         style="@style/DashboardButton"
-        android:drawableTop="@drawable/calendar"
+        android:drawableTop="@drawable/calendar2"
         android:text="view events"
         android:layout_marginLeft="50dp"
         android:layout_alignTop="@+id/add_event_but"
@@ -70,49 +68,30 @@
         android:layout_marginStart="50dp" />
 
     <!--  Messages Button -->
-    <Button
-        android:id="@+id/btn_messages"
-        style="@style/DashboardButton"
-        android:drawableTop="@drawable/add"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/add_event_but"
-        android:layout_alignEnd="@+id/add_event_but" />
 
     <!--  Places Button -->
-    <Button
-        android:id="@+id/edit_but"
-        style="@style/DashboardButton"
-        android:drawableTop="@drawable/edit"
-        android:text="edit tasks"
-        android:layout_width="wrap_content"
-        android:layout_alignTop="@+id/btn_messages"
-        android:layout_toLeftOf="@+id/add_event_but"
-        android:layout_toStartOf="@+id/add_event_but" />
 
     <!--  Events Button -->
     <Button
         android:id="@+id/btn_Profile"
         style="@style/DashboardButton"
-        android:drawableTop="@drawable/id"
-        android:layout_alignTop="@+id/settings_but"
-        android:layout_alignLeft="@+id/btn_messages"
-        android:layout_alignStart="@+id/btn_messages"
-        android:layout_alignBottom="@+id/settings_but"
-        android:layout_alignRight="@+id/btn_messages"
-        android:layout_alignEnd="@+id/btn_messages"
+        android:drawableTop="@drawable/id2"
         android:text="Edit Profile"
         android:textSize="14dp"
-        android:typeface="normal" />
+        android:typeface="normal"
+        android:layout_alignTop="@+id/settings_but"
+        android:layout_alignLeft="@+id/add_event_but"
+        android:layout_alignStart="@+id/add_event_but" />
 
     <!--  Photos Button -->
     <Button
         android:id="@+id/settings_but"
         style="@style/DashboardButton"
-        android:drawableTop="@drawable/settings"
+        android:drawableTop="@drawable/settings2"
         android:text="settings"
+        android:layout_marginBottom="86dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/add_event_but"
-        android:layout_toStartOf="@+id/add_event_but"
-        android:layout_marginBottom="66dp" />
+        android:layout_alignRight="@+id/view_but"
+        android:layout_alignEnd="@+id/view_but" />
 
 </RelativeLayout>

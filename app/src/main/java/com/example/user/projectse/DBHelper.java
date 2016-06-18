@@ -122,6 +122,13 @@ public class DBHelper  extends SQLiteOpenHelper {
         return res;
 
     }
+    public Cursor getEvent(String title) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + EVENT_TABLE_NAME + " WHERE " +
+                EVENT_COLUMN_TITLE + "=?", new String[]{title } );
+        return res;
+
+    }
 
     public Cursor getAllEvents() {
         SQLiteDatabase db = this.getReadableDatabase();

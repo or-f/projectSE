@@ -83,7 +83,7 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
 
                     else        // if all inputs are valid create event object to send to database
                     {
-                        int reminders_amount=6;
+                        int reminders_amount=4;
                         Time time=new Time(0);
                         time.setHours(hour_x);
                         time.setMinutes(minute_x);
@@ -108,14 +108,22 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
                         c.set(12, minute_x);// MINUTE = 12;
                         c.set(13, 0);//SECOND = 13
                         c.set(14, 0);// MILLISECOND = 14;
-                        c.add(Calendar.SECOND, -180);
+                        int hour=60*60;
+                        int day=24*hour;
+                        int week=7*day;
+                        int[] timearray={0,hour,day-hour,week-hour-day};
+                        Long eventdate=c.getTime().getTime();
+                       //c.add(Calendar.SECOND, -180);
                         for(int i=0;i<reminders_amount;i++)
                         {
-                            updateUI();
-                            event.addReminder(mNotificationCount);
-                            setAlarm(c, event.getTitle());
-                                c.add(Calendar.SECOND, 25);
+                            c.add(Calendar.SECOND, -timearray[i]);
+                            if(c.after(Calendar.getInstance())) {
+
+                                updateUI();
+                                event.addReminder(mNotificationCount);
+                                setAlarm(c, event.getTitle(),eventdate);
                                 incrementCount();
+                            }
                         }
                         database.insertEvent(event);
                         //  return to main page
@@ -235,12 +243,16 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         updateUI();
 
     }
-    public void setAlarm(Calendar c,String s){
+    public void setAlarm(Calendar c,String s, Long realdate){
         alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmIntent = new Intent(NewEventActivity.this, AlarmReceiver.class);
         alarmIntent.putExtra("title",s);    // add title
-        alarmIntent.putExtra("date",c.getTime().getTime()); // add date
-        alarmIntent.putExtra("count", mNotificationCount); // save intent id
+        alarmIntent.putExtra("date", c.getTime().getTime()); // add date
+        alarmIntent.putExtra("count", mNotificationCount);// save intent id
+        alarmIntent.putExtra("time", hour_x + ":" + minute_x);
+        alarmIntent.putExtra("loc",location_x.toString());
+        alarmIntent.putExtra("type",typeOfEvent.toString());
+        alarmIntent.putExtra("eventdate",realdate);
         pendingIntent =PendingIntent.getBroadcast(NewEventActivity.this, mNotificationCount, alarmIntent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTime().getTime(), pendingIntent); // set reminder for this date and time
         Long time=c.getTime().getTime();
