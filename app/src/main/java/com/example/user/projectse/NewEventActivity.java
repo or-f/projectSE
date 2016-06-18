@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -52,7 +52,7 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         showDialogOnButtonClick();
         if (savedInstanceState != null) {
@@ -130,7 +130,7 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         // Spinner click listener
         spinner.setOnItemSelectedListener(this);
         // Spinner Drop down elements
-        List<String> categories = new ArrayList<String>();
+        List<String> categories = new ArrayList<>();
         categories.add("Select Event Type");
         categories.add("Test");
         categories.add("Assignment");
@@ -148,10 +148,7 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        typeOfEvent=item;   // save the type of the event
-        // (TEST) Show selected spinner item on screen
-        //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+        typeOfEvent = parent.getItemAtPosition(position).toString();  // save the type of the event
     }
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
@@ -226,7 +223,6 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -239,41 +235,24 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
         updateUI();
 
     }
-    //@Override
-    /*
-    protected void onNewIntent(Intent intent ) {
-        Toast.makeText(this, "onNewIntent(), intent = " + intent , Toast.LENGTH_LONG).show();
-        if (intent.getExtras() != null)
-        {
-            Toast.makeText(this, "in onNewIntent = " + intent.getExtras().getString("test"), Toast.LENGTH_LONG).show();
-
-        }
-
-        super.onNewIntent(intent);
-        setIntent(intent);
-    }*/
-
     public void setAlarm(Calendar c,String s){
         alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmIntent = new Intent(NewEventActivity.this, AlarmReceiver.class);
-        alarmIntent.putExtra("title",s);
-        alarmIntent.putExtra("date",c.getTime().getTime());
-        alarmIntent.putExtra("count", mNotificationCount);
-
+        alarmIntent.putExtra("title",s);    // add title
+        alarmIntent.putExtra("date",c.getTime().getTime()); // add date
+        alarmIntent.putExtra("count", mNotificationCount); // save intent id
         pendingIntent =PendingIntent.getBroadcast(NewEventActivity.this, mNotificationCount, alarmIntent, 0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTime().getTime(), pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTime().getTime(), pendingIntent); // set reminder for this date and time
         Long time=c.getTime().getTime();
         SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String dateText = df2.format(time);
-
-        Toast.makeText(this, "NewEventActivity::setAlarm:: id's: "+s+" Alarm Scheduled for: "
-                + dateText+ " notification count="+mNotificationCount,Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "NewEventActivity::setAlarm:: id's: "+s+" Alarm Scheduled for: "
+        //        + dateText+ " notification count="+mNotificationCount,Toast.LENGTH_LONG).show();
     }
     private int getInterval(){
         int seconds = 60;
         int milliseconds = 1000;
-        int repeatMS = seconds  * milliseconds;
-        return repeatMS;
+        return (seconds  * milliseconds);
     }
     public void updateUI(){
         mNotificationCount =((MyAlarm) this.getApplication()).getNotificationCount();
@@ -287,9 +266,8 @@ public class NewEventActivity extends Activity implements AdapterView.OnItemSele
     protected void onResume(){
         super.onResume();
         if(this.getIntent().getExtras() != null){
-            Toast.makeText(this,"NewEventActivity::onResume:: extras: " + this.getIntent().getExtras(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this,"NewEventActivity::onResume:: extras: " + this.getIntent().getExtras(), Toast.LENGTH_LONG).show();
             updateUI();
-
         }
     }
     public void onSaveInstanceState(Bundle savedInstanceState) {

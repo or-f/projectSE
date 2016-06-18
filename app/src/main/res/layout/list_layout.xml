@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/idTxt"
-        android:layout_above="@+id/nameTxt"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="invisible" />
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="#303031"
+    style="@style/mytheme">
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,9 +13,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/nameTxt"
-        android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp"
-        android:layout_above="@+id/locTxt"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_alignTop="@+id/dateTxt"
         android:layout_toRightOf="@+id/dateTxt"
         android:layout_toEndOf="@+id/dateTxt" />
 
@@ -33,10 +25,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/locTxt"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/dateTxt"
-        android:layout_alignLeft="@+id/nameTxt"
-        android:layout_alignStart="@+id/nameTxt" />
+        android:layout_marginRight="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_alignTop="@+id/nameTxt"
+        android:layout_toLeftOf="@+id/buttonEdit"
+        android:layout_toStartOf="@+id/buttonEdit" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,10 +37,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/dateTxt"
-        android:layout_marginTop="35dp"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/timeTxt"
-        android:layout_alignStart="@+id/timeTxt" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="21dp"
+        android:layout_marginLeft="7dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,10 +50,9 @@
         android:text="Small Text"
         android:id="@+id/timeTxt"
         android:layout_below="@+id/dateTxt"
-        android:layout_alignLeft="@+id/idTxt"
-        android:layout_alignStart="@+id/idTxt"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="7dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,35 +60,37 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/typeTxt"
-        android:layout_marginLeft="23dp"
-        android:layout_marginStart="23dp"
-        android:layout_below="@+id/nameTxt"
-        android:layout_toRightOf="@+id/nameTxt"
-        android:layout_toEndOf="@+id/nameTxt" />
+        android:layout_alignTop="@+id/timeTxt"
+        android:layout_alignLeft="@+id/nameTxt"
+        android:layout_alignStart="@+id/nameTxt" />
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:text="Edit"
         android:id="@+id/buttonEdit"
-        android:layout_alignBottom="@+id/nameTxt"
+        android:textSize="9dp"
+        android:textAlignment="center"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/idTxt"
-        android:layout_alignLeft="@+id/buttonDel"
-        android:layout_alignStart="@+id/buttonDel"
-        android:textSize="11dp"
-        android:elegantTextHeight="false" />
+        android:layout_alignBottom="@+id/locTxt"
+        android:layout_marginRight="7dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete"
         android:id="@+id/buttonDel"
+        android:textSize="9dp"
         android:layout_below="@+id/buttonEdit"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/locTxt"
-        android:textSize="11dp" />
+        android:layout_toRightOf="@+id/locTxt"
+        android:layout_marginRight="7dp" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/timeTxt"
+        android:layout_toLeftOf="@+id/typeTxt"
+        android:layout_toStartOf="@+id/typeTxt"/>
 
 </RelativeLayout>

@@ -23,6 +23,7 @@
         </activity>
 
         <!-- News Feed Activity -->
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".NewEventActivity" />
         <activity android:name=".ViewActivity" />
         <!--  -->

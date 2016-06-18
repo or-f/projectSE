@@ -9,13 +9,18 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.user.projectse.ViewActivity">
+    tools:context="com.example.user.projectse.ViewActivity"
+    android:background="#1d1c1c"
+    android:theme="@style/mytheme"
+    style="@style/mytheme">
 
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/listView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true" />
+        style="@style/mytheme"
+        android:background="#1d1c1c"
+        android:padding="16dp"
+        android:divider="#1d1c1c"
+        android:dividerHeight="10dp" />
 </RelativeLayout>

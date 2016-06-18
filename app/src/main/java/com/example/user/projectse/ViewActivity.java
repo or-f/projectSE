@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class ViewActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+     //   Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ////setSupportActionBar(toolbar);
         locdb = new DBHelper(this);
         Cursor cursor = locdb.getAllupcomingEvents();
@@ -114,7 +113,7 @@ public class ViewActivity extends Activity{
             tmpdb = new DBHelper(context);
             Button EditRowBut = (Button) view.findViewById(R.id.buttonEdit);
             Button DelRowBut = (Button) view.findViewById(R.id.buttonDel);
-            final TextView tvId = (TextView) view.findViewById(R.id.idTxt);
+           // final TextView tvId = (TextView) view.findViewById(R.id.idTxt);
             TextView tvName = (TextView) view.findViewById(R.id.nameTxt);
             TextView tvLocation = (TextView) view.findViewById(R.id.locTxt);
             TextView tvDate = (TextView) view.findViewById(R.id.dateTxt);
@@ -135,7 +134,7 @@ public class ViewActivity extends Activity{
             String time = cursor.getString(4);
             String type = cursor.getString(5);
             // Populate fields with extracted properties
-            tvId.setText(id);
+            //tvId.setText(id);
             tvName.setText(title);
             tvLocation.setText(location);
             tvDate.setText(date2);
